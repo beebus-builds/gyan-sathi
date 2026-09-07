@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#10b981"/>
+      <stop offset="1" stop-color="#046c4e"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#bg)"/>
+  <!-- open book forming a G -->
+  <path d="M256 132 C220 112 170 108 128 122 L128 340 C170 326 220 330 256 350 C292 330 342 326 384 340 L384 122 C342 108 292 112 256 132 Z" fill="#ffffff"/>
+  <path d="M256 132 L256 350" stroke="#059669" stroke-width="14" stroke-linecap="round"/>
+  <path d="M160 170 C190 160 220 162 240 174 M160 214 C190 204 220 206 240 218 M272 174 C292 162 322 160 352 170 M272 218 C292 206 322 204 352 214" stroke="#059669" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <!-- diyo dot: uniquely Nepali study-flame -->
+  <circle cx="398" cy="96" r="26" fill="#fbbf24"/>
+  <circle cx="398" cy="96" r="11" fill="#fffbeb"/>
+  <!-- GS wordmark -->
+  <text x="256" y="442" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="120" font-weight="900" letter-spacing="4" fill="#ffffff">GS</text>
+</svg>
