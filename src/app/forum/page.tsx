@@ -8,6 +8,12 @@ interface Post { id: number; q: string; tag: string; votes: number; answers: str
 const seed: Post[] = [
   { id: 1, q: "In C, why does `a++ + ++a` give undefined behaviour? TU asked this twice.", tag: "C Programming", votes: 12, answers: ["Because C doesn't define order of side-effects between sequence points — the compiler may evaluate in any order. Cite C11 §6.5."], ts: Date.now() },
   { id: 2, q: "DBMS: R(A,B,C) with A→B, B→C — normalize to 3NF?", tag: "DBMS", votes: 8, answers: ["Decompose into R1(A,B) and R2(B,C). A stays key of R1, B key of R2. Removes transitive A→C."], ts: Date.now() },
+  { id: 3, q: "OS numericals: FCFS vs SJF on arrival [0,1,2] burst [8,4,2] — average waiting time?", tag: "OS", votes: 6, answers: ["FCFS: completion 8,12,14 → wait 0,7,10 → avg 5.67. SJF: order P1(0-8)? No — at t=0 only P1; run it 0-8, then P3(8-10), P2(10-14) → wait 0,8,9 → avg 5.67. Same here — but draw both Gantts, step marks live there."], ts: Date.now() },
+  { id: 4, q: "Subnet 192.168.1.0/24 into 4 equal subnets — mask and ranges?", tag: "Networks", votes: 5, answers: ["Need 2 borrowed bits → /26, mask 255.255.255.192. Subnets: .0/26 (.1–.62, bc .63), .64/26, .128/26, .192/26. Block size 64."], ts: Date.now() },
+  { id: 5, q: "BST insert 50,30,70,20,40,60,80 — what is the inorder traversal?", tag: "DSA", votes: 4, answers: ["20 30 40 50 60 70 80 — always sorted. If your inorder isn't sorted, your tree is wrong. That's the self-check."], ts: Date.now() },
+  { id: 6, q: "Java: abstract class vs interface — when to use which in the 10-marker?", tag: "Java", votes: 3, answers: ["Need shared state/constructors/single hierarchy → abstract class. Need multiple behaviour contracts across unrelated classes → interfaces. Write one mini-program of each side by side."], ts: Date.now() },
+  { id: 7, q: "HTTP: why is GET called idempotent but POST is not?", tag: "Web", votes: 2, answers: ["Repeating a GET changes nothing server-side (safe to retry/refresh). Repeating a POST can double-submit — orders, payments. That's why browsers warn on POST refresh."], ts: Date.now() },
+  { id: 8, q: "How do toppers actually revise the night before a TU theory paper?", tag: "Other", votes: 7, answers: ["Formula/diagram book only — no new topics. One past-paper set skimmed for pattern, 25-MCQ drill, sleep by 11. New chapters at night = negative marks energy."], ts: Date.now() },
 ];
 
 const tags = ["All", "C Programming", "DBMS", "DSA", "OS", "Networks", "Java", "Web", "Other"];

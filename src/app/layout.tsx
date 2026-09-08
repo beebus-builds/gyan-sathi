@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -47,10 +47,15 @@ export const metadata: Metadata = {
       "Free study hub for TU IT students in Nepal: syllabus, notes, board questions, MCQ mocks, tracker, forum and offline chatbot Sathi.",
   },
   robots: { index: true, follow: true },
+  manifest: "/manifest.webmanifest",
   icons: {
     icon: "/icon.svg",
     apple: "/icon.svg",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#059669",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

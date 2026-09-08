@@ -40,6 +40,12 @@ export default function QuizPage() {
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [finished, setFinished] = useState(false);
   const timer = useRef<number | null>(null);
+  const [history, setHistory] = useState<{ ts: number; bank: string; subject: string; score: number; total: number }[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      return JSON.parse(localStorage.getItem("tu-quiz-history") || "[]");
+    } catch { return []; }
+  });
 
   const raw = bank === "Semester MCQs" ? mcqs : entranceMcqs;
   const subjects = useMemo(() => ["All", ...Array.from(new Set(raw.map((m) => m.subject)))], [raw]);
@@ -100,9 +106,32 @@ export default function QuizPage() {
     try {
       const prev = JSON.parse(localStorage.getItem("tu-quiz-history") || "[]");
       prev.unshift({ ts: Date.now(), bank, subject, score, total: order.length });
-      localStorage.setItem("tu-quiz-history", JSON.stringify(prev.slice(0, 10)));
+      const next = prev.slice(0, 10);
+      localStorage.setItem("tu-quiz-history", JSON.stringify(next));
+      setHistory(next);
     } catch { /* ignore */ }
   };
+
+  const clearHistory = () => {
+    try { localStorage.removeItem("tu-quiz-history"); } catch { /* ignore */ }
+    setHistory([]);
+  };
+
+  const weak = (() => {
+    const by: Record<string, { got: number; n: number }> = {};
+    for (const h of history) {
+      if (!h.total) continue;
+      by[h.subject] ??= { got: 0, n: 0 };
+      by[h.subject].got += h.score / h.total;
+      by[h.subject].n += 1;
+    }
+    let worst: { s: string; pct: number } | null = null;
+    for (const [s, v] of Object.entries(by)) {
+      const pct = Math.round((v.got / v.n) * 100);
+      if (!worst || pct < worst.pct) worst = { s, pct };
+    }
+    return worst;
+  })();
 
   if (!q)
     return (
@@ -182,6 +211,29 @@ export default function QuizPage() {
             <button onClick={() => resetWith(raw, subject)} className="rounded-full bg-emerald-600 px-5 py-2 text-sm font-bold text-white">Retry shuffled</button>
             <button onClick={() => setFinished(false)} className="rounded-full border border-[var(--border)] px-5 py-2 text-sm">Review answers</button>
           </div>
+        </Bento>
+      )}
+
+      {history.length > 0 && (
+        <Bento className="mt-3">
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-sm font-extrabold">Past mocks ({history.length})</p>
+            <button onClick={clearHistory} className="rounded-full border border-[var(--border)] px-3 py-1 text-xs">Clear</button>
+          </div>
+          {weak && (
+            <p className="mt-2 rounded-xl bg-amber-50 p-2.5 text-sm dark:bg-zinc-800">
+              Weakest area: <b>{weak.s} ({weak.pct}%)</b>{" "}
+              <button onClick={() => pickSubject(weak.s)} className="font-bold text-emerald-600">Drill it →</button>
+            </p>
+          )}
+          <ul className="mt-2 space-y-1.5">
+            {history.map((h, i) => (
+              <li key={`${h.ts}-${i}`} className="flex items-center justify-between gap-2 rounded-lg bg-zinc-50 px-3 py-2 text-sm dark:bg-zinc-800/60">
+                <span className="font-semibold">{h.bank} · {h.subject}</span>
+                <span className="tabular-nums text-zinc-500">{new Date(h.ts).toLocaleDateString()} · <b className="text-zinc-900 dark:text-zinc-100">{h.score}/{h.total}</b></span>
+              </li>
+            ))}
+          </ul>
         </Bento>
       )}
     </main>

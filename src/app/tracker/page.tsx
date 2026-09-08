@@ -39,6 +39,15 @@ export default function TrackerPage() {
     a.download = "tu-tracker.json";
     a.click();
   };
+  const importJson = (f: File | undefined) => {
+    if (!f) return;
+    f.text().then((t) => {
+      try {
+        const o = JSON.parse(t);
+        if (o && typeof o === "object") setChecked((c) => ({ ...c, ...o }));
+      } catch { /* ignore bad file */ }
+    });
+  };
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10">
@@ -52,6 +61,10 @@ export default function TrackerPage() {
         ))}
         <span className="flex-1" />
         <button onClick={exportJson} className="rounded-full border border-[var(--border)] px-4 py-2 text-sm">⤓ Export</button>
+        <label className="cursor-pointer rounded-full border border-[var(--border)] px-4 py-2 text-sm">
+          ⤒ Import
+          <input type="file" accept="application/json" className="hidden" onChange={(e) => importJson(e.target.files?.[0])} aria-label="Import tracker JSON" />
+        </label>
         <button onClick={resetProg} className="rounded-full border border-[var(--border)] px-4 py-2 text-sm">Reset {p.short}</button>
       </div>
       <Bento className="mt-4">

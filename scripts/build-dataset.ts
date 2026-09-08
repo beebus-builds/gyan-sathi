@@ -100,7 +100,7 @@ for (const s of pastQuestions) {
 }
 
 /* ---- 6. Formula sheets (2 phrasings each) ---- */
-const FORMULA_NAMES = ["subnetting", "complexity / Big-O", "statistics", "discrete structures", "number systems"];
+const FORMULA_NAMES = ["subnetting", "complexity / Big-O", "statistics", "discrete structures", "number systems", "8085 microprocessor", "math for CS"];
 SATHI_FORMULAS.forEach((f, i) => {
   const name = FORMULA_NAMES[i] ?? `topic ${i + 1}`;
   add(`Give a quick formula sheet for ${name} (TU exam).`, "", f.body);

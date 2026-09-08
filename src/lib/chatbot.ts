@@ -28,6 +28,17 @@ const norm = (s: string) =>
 
 const tokens = (s: string) => norm(s).split(" ").filter(Boolean);
 
+/** Romanized Nepali study words students actually type → English intent words. */
+const MIX_MAP: Record<string, string> = {
+  tayari: "plan", taiyari: "plan", tayaari: "plan",
+  mahatvapurna: "important", mahatwapurna: "important", important: "important",
+  sujhab: "tips", sujhav: "tips", sujhau: "tips",
+  pariksha: "exam", parikshya: "exam",
+  padhne: "study", padhnu: "study",
+};
+const mixToEnglish = (s: string) =>
+  s.split(/\s+/).map((w) => MIX_MAP[w.toLowerCase()] ?? w).join(" ");
+
 function levenshtein(a: string, b: string): number {
   if (a === b) return 0;
   if (!a.length) return b.length;
@@ -324,6 +335,21 @@ const TOPICS: Topic[] = [
     body: "**Stats essentials for CS papers**\n\n• Normal distribution: mean = median = mode (symmetric).\n• P(A|B) = P(B|A)P(A)/P(B) — Bayes in one line.\n• Variance = E[X²] − (E[X])².\n• Hypothesis flow: H0/H1 → test statistic → p-value → reject H0 if p < α (usually 0.05).\n\nViva favourites: when mean≠median (skew); p-value meaning.\n\nNext: `stats formulas` or `quiz me on Stats`.",
   },
   {
+    id: "automata", label: "Automata & TOC",
+    keys: ["automata", "finite automata", "nfa", "dfa", "pumping lemma", "turing", "halting", "pda", "context free", "subset construction", "undecidable"],
+    body: "**Automata ladder (memorize the hierarchy)**\n\n• FA/DFA/NFA ↔ regular languages. NFA→DFA via subset construction (≤ 2ⁿ states).\n• PDA (+stack) ↔ context-free (handles aⁿbⁿ nesting).\n• Turing Machine ↔ recursively enumerable; halting problem is undecidable.\n• Pumping lemma = the tool to prove NOT regular (assume → pump → contradict).\n\nTU frame: hierarchy table → one conversion → one undecidability line.\n\nViva favourites: why FA can't count; NFA vs DFA state blowup.\n\nNext: `important questions CSC262` or `quiz me on TOC`.",
+  },
+  {
+    id: "egov", label: "E-Governance (Nepal)",
+    keys: ["e-governance", "egovernance", "g2c", "g2b", "g2g", "electronic transactions act", "eta 2063", "digital nepal"],
+    body: "**E-Governance — the Nepal-flavoured 5-marker**\n\n• G2C (services to citizens), G2B (licenses/tenders/tax), G2G (between agencies), G2E (employees).\n• Maturity ladder: presence → interaction → transaction → transformation.\n• ETA 2063: e-signatures + electronic records legally valid, Controller of Certification.\n\nWrite it as: 4 models with one example each → ladder → ETA line. Examiners love the Nepal specifics.\n\nNext: `quiz me on E-Governance`.",
+  },
+  {
+    id: "nummethods", label: "Numerical Methods",
+    keys: ["numerical", "bisection", "newton raphson", "secant", "false position", "gauss elimination", "interpolation", "simpson", "trapezoidal", "runge kutta"],
+    body: "**Numerical Methods — method picker for TU**\n\n• Roots: bisection (slow, always converges) → false position → secant → Newton-Raphson (fastest, needs f′ + good guess).\n• Linear systems: Gauss elimination → Gauss-Seidel iteration (diagonally dominant converges).\n• Integration: trapezoidal → Simpson's 1/3 (needs even intervals, O(h⁴)).\n• Always show 2 iterations by hand with error calc — iteration tables carry step marks.\n\nViva favourites: Newton convergence condition; Simpson's interval rule.\n\nNext: `important questions CSC212`.",
+  },
+  {
     id: "answer-writing", label: "How to Write TU Answers",
     keys: ["how to write", "answer writing", "10 marks", "5 marks", "presentation", "step marks", "time management", "exam tips", "diagram tips"],
     body: "**TU answer-writing system (works for every subject)**\n\n• Structure: 1-line definition → diagram/table → 4-6 points → one example → 1-line conclusion.\n• Diagrams + formulas + partial code earn step marks even when the final answer is wrong — never leave blanks.\n• 3-hour plan: 10-markers first (35 min each), then 5-markers (15 min), last 15 min for diagrams/labels review.\n• Hand-write code daily; examiners reward traced logic and comments.\n\nNext: say `plan <subject> <days>` e.g. `plan DBMS 7 days`, or `important questions <subject>`.",
@@ -499,6 +525,14 @@ const FORMULAS: { keys: string[]; body: string }[] = [
     keys: ["number", "binary", "conversion", "complement"],
     body: "**Number-system sheet**\n\n• 2's complement = invert + 1 (stores negatives).\n• Binary→octal: group by 3; binary→hex: group by 4.\n• 8085: 16 address lines → 64 KB (2^16).",
   },
+  {
+    keys: ["8085", "assembly", "instruction set", "interrupt"],
+    body: "**8085 cheat sheet**\n\n• Buses: 8-bit data, 16 address → 64 KB. Flags: S Z AC P CY.\n• MVI = immediate, LDA = direct, MOV A,M = register-indirect (HL).\n• Interrupts: TRAP > RST7.5 > RST6.5 > RST5.5 > INTR. FF+01 → 00, Zero=1, Carry=1.",
+  },
+  {
+    keys: ["math", "calculus", "matrix", "log", "trigonometry", "integration", "differentiation"],
+    body: "**Math-for-CS sheet (entrance + sem papers)**\n\n• d/dx(xⁿ) = n·xⁿ⁻¹ • ∫2x = x²+C • 2⁶ = 64 • subsets of n items = 2ⁿ.\n• Slope of ax+by=c → −a/b. ⁵C₂ = 10.\n• Matrices: (AB)ᵀ = BᵀAᵀ; singular ⟺ det = 0.",
+  },
 ];
 
 function formulaReply(q: string): string | null {
@@ -563,7 +597,7 @@ function flashReply(q: string): string {
 /* ---------------- main entry ---------------- */
 
 export function botReply(input: string): string {
-  const q = norm(input).trim();
+  const q = norm(mixToEnglish(input)).trim();
   if (!q) return "Ask me anything exam-related — e.g. `quiz me on OS`, `viva DBMS`, `important questions CSC265`, `plan Networks 7 days`, `subnetting formulas`.";
 
   if (/^(hi|hello|hey|namaste|namaskar)\b/.test(q))
