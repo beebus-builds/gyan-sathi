@@ -9,6 +9,7 @@ const links = [
   { href: "/notes", label: "Notes" },
   { href: "/questions", label: "Questions" },
   { href: "/quiz", label: "Quiz" },
+  { href: "/flashcards", label: "Cards" },
   { href: "/forum", label: "Forum" },
   { href: "/tracker", label: "Tracker" },
   { href: "/chat", label: "AI Chat" },

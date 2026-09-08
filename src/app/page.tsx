@@ -90,8 +90,9 @@ export default function Home() {
             { t: "Questions bank", d: "Board + model sets with marks.", h: "/questions", c: "Practice" },
             { t: "Exam prep quiz", d: "Shuffled, timed, with explanations.", h: "/quiz", c: "Start quiz" },
             { t: "Doubt forum", d: "Ask, answer, upvote in browser.", h: "/forum", c: "Visit forum" },
+            { t: "Flashcards", d: "Flip-card recall with self-scoring.", h: "/flashcards", c: "Flip cards" },
             { t: "Syllabus tracker", d: "Check off units, see % completion.", h: "/tracker", c: "Track" },
-            { t: "Smart chatbot", d: "Plain English / Nepali-mix answers.", h: "/chat", c: "Chat now", big: true },
+            { t: "Smart chatbot", d: "Plain English / Nepali-mix answers.", h: "/chat", c: "Chat now" },
           ].map((f) => (
             <div key={f.t} className={`bento bento-hover ${f.big ? "md:col-span-2" : ""}`}>
               <h3 className="font-extrabold">{f.t}</h3>

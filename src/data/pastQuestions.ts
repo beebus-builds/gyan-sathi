@@ -87,6 +87,32 @@ export const pastQuestions: PastQuestion[] = [
       { marks: "10", text: "Explain Distance Vector vs Link State routing with example + DNS resolution steps." },
     ],
   },
+  {
+    id: "csit-os-2081",
+    program: "BSc CSIT",
+    subject: "Operating Systems",
+    code: "CSC264",
+    year: "2081 BS (Model)",
+    type: "Model",
+    questions: [
+      { marks: "5", text: "Given arrival/burst table, draw Gantt charts for FCFS vs SJF and compute average waiting time." },
+      { marks: "5", text: "Explain the 4 deadlock conditions (MHNC) with a two-process printer example + one prevention method." },
+      { marks: "10", text: "Compare paging vs segmentation (fragmentation, table structure) + explain thrashing and how the working-set model fixes it." },
+    ],
+  },
+  {
+    id: "csit-oop-2080",
+    program: "BSc CSIT",
+    subject: "Object Oriented Programming (C++)",
+    code: "CSC166",
+    year: "2080 BS (Board)",
+    type: "Board",
+    questions: [
+      { marks: "2×5=10", text: "a) 4 pillars of OOP with one example each. b) Constructor vs destructor + copy constructor need." },
+      { marks: "3×5=15", text: "a) Function overloading vs overriding with programs. b) Virtual functions + dynamic binding. c) Templates vs macros." },
+      { marks: "10", text: "Design a Shape hierarchy (Circle/Rectangle) with virtual area(), operator overloading for Complex addition, file I/O of objects." },
+    ],
+  },
 ];
 
 export const studyTips = [

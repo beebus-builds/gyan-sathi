@@ -7,7 +7,7 @@ export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [log, setLog] = useState<{ role: "user" | "bot"; text: string }[]>([
-    { role: "bot", text: "Namaste! I'm Sathi — ask me about CSIT/BIT/BCA subjects, eligibility, or topics like normalization, subnetting, OOP." },
+    { role: "bot", text: "Namaste! I'm Sathi — ask for a drill (`quiz me on OS`), viva Qs, board sets, or a study plan." },
   ]);
   const bottom = useRef<HTMLDivElement>(null);
 
@@ -48,7 +48,7 @@ export default function ChatWidget() {
             <div ref={bottom} />
           </div>
           <div className="flex flex-wrap gap-1 border-t border-[var(--border)] p-2">
-            {["CSIT 4th sem subjects", "BIT eligibility", "Explain normalization"].map((s) => (
+            {["Quiz me on DBMS", "Viva: OOP", "Plan OS 7 days"].map((s) => (
               <button key={s} onClick={() => send(s)} className="rounded-full border border-[var(--border)] px-2 py-1 text-xs hover:border-emerald-500/60">
                 {s}
               </button>

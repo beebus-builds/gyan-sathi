@@ -14,7 +14,9 @@ export default function Footer() {
           <div className="mt-4 flex flex-wrap gap-2">
             {[
               ["/programs", "Syllabus"],
+              ["/questions", "Questions"],
               ["/quiz", "Mock test"],
+              ["/flashcards", "Flashcards"],
               ["/tracker", "Tracker"],
               ["/chat", "Ask AI"],
             ].map(([h, l]) => (

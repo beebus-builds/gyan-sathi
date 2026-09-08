@@ -1,0 +1,8 @@
+# Stage-2 training dependencies (GPU machine / Colab, NOT the Next.js app).
+torch
+transformers
+datasets
+accelerate
+peft
+trl
+bitsandbytes   # only needed for --load-4bit on CUDA GPUs

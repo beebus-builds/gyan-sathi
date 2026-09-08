@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { botReply } from "@/lib/chatbot";
 import { Badge, Bento } from "@/components/ui";
 
-const suggestions = ["CSIT 4th sem subjects", "BIT eligibility", "BCA vs CSIT", "Explain normalization", "Subnetting help", "Entrance prep plan"];
+const suggestions = ["Quiz me on OS", "Flashcards: DBMS", "Important questions: DBMS", "Plan Networks 7 days", "Viva: OOP", "CSIT 4th sem subjects"];
 
 export default function ChatPage() {
   const [input, setInput] = useState("");
   const [log, setLog] = useState<{ role: "user" | "bot"; text: string }[]>([
-    { role: "bot", text: "Namaste! I'm Sathi — GyanSathi's custom-coded assistant, no API key, answers from the real TU syllabus in this app.\n\nTry: `CSIT 1st sem subjects` · `BIT eligibility` · `BCA vs CSIT` · `Explain normalization` · `Entrance prep plan`" },
+    { role: "bot", text: "Namaste! I'm Sathi — GyanSathi's exam-prep buddy. I drill MCQs, fire viva questions, pull board sets and build day-wise plans from the real TU syllabus.\n\nTry: `Quiz me on OS` · `Viva: DBMS` · `Important questions: CSC265` · `Plan Networks 7 days`" },
   ]);
   const bottom = useRef<HTMLDivElement>(null);
 

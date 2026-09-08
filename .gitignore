@@ -36,6 +36,14 @@ yarn-error.log*
 # vercel
 .vercel
 
+# generated instruction-tuning dataset (rebuild with `npm run dataset`)
+/datasets
+/.dataset-tmp
+
+# python
+__pycache__/
+*.pyc
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

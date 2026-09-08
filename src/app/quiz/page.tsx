@@ -44,14 +44,8 @@ export default function QuizPage() {
   const raw = bank === "Semester MCQs" ? mcqs : entranceMcqs;
   const subjects = useMemo(() => ["All", ...Array.from(new Set(raw.map((m) => m.subject)))], [raw]);
 
-  const build = (list: MCQ[]) => {
-    const filtered = subject === "All" ? list : list.filter((m) => m.subject === subject);
-    const mapped: ShuffledQ[] = shuffle(filtered).map((mcq) => ({
-      mcq,
-      // fix answer-position bias (data was all index 0): shuffle options
-      options: shuffle(mcq.options.map((text, i) => ({ text, correct: i === mcq.answer }))),
-    }));
-    setOrder(mapped);
+  const resetWith = (list: MCQ[], subj: string) => {
+    setOrder(makeOrder(list, subj));
     setIdx(0);
     setPicked(null);
     setScore(0);
@@ -59,10 +53,16 @@ export default function QuizPage() {
     setFinished(false);
   };
 
-  useEffect(() => {
-    build(raw.filter((m) => subject === "All" || m.subject === subject));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bank, subject]);
+  const pickBank = (v: Bank) => {
+    setBank(v);
+    setSubject("All");
+    resetWith(v === "Semester MCQs" ? mcqs : entranceMcqs, "All");
+  };
+
+  const pickSubject = (s: string) => {
+    setSubject(s);
+    resetWith(raw, s);
+  };
 
   // clean timer on unmount / bank change (fixes window.__t leak)
   useEffect(() => {
@@ -120,10 +120,10 @@ export default function QuizPage() {
       <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Shuffled options, subject filters, clean timer, review + history. Entrance set included.</p>
 
       <div className="mt-4 space-y-3">
-        <Pills options={["Semester MCQs", "Entrance MCQs"] as const} value={bank} onPick={(v) => { setBank(v); setSubject("All"); }} />
+        <Pills options={["Semester MCQs", "Entrance MCQs"] as const} value={bank} onPick={pickBank} />
         <div className="flex flex-wrap gap-2">
           {subjects.map((s) => (
-            <button key={s} onClick={() => setSubject(s)} className={`pressable rounded-full px-3 py-1 text-xs font-bold ${subject === s ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900" : "border border-[var(--border)]"}`}>
+            <button key={s} onClick={() => pickSubject(s)} className={`pressable rounded-full px-3 py-1 text-xs font-bold ${subject === s ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900" : "border border-[var(--border)]"}`}>
               {s}
             </button>
           ))}
@@ -132,7 +132,7 @@ export default function QuizPage() {
           <button onClick={startTimed} className="pressable rounded-full border border-[var(--border)] px-4 py-2 text-sm font-bold" aria-live="polite">
             {timeLeft === null ? "Start 15:00 timer" : `⏱ ${Math.floor(timeLeft / 60)}:${String(timeLeft % 60).padStart(2, "0")}`}
           </button>
-          <button onClick={() => build(raw)} className="pressable rounded-full border border-[var(--border)] px-4 py-2 text-sm">⤨ Shuffle</button>
+          <button onClick={() => resetWith(raw, subject)} className="pressable rounded-full border border-[var(--border)] px-4 py-2 text-sm">⤨ Shuffle</button>
           <button onClick={() => { setFinished(true); saveResult(); }} className="pressable rounded-full bg-emerald-600 px-4 py-2 text-sm font-bold text-white">Finish & save</button>
         </div>
       </div>
@@ -171,7 +171,7 @@ export default function QuizPage() {
           )}
           <div className="mt-4 flex gap-2">
             <button onClick={() => { setPicked(answers[order[(idx + 1) % order.length]?.mcq.id] ?? null); setIdx((v) => (v + 1) % order.length); }} className="btn-shine rounded-full bg-emerald-600 px-5 py-2 text-sm font-bold text-white">Next →</button>
-            <button onClick={() => build(raw)} className="rounded-full border border-[var(--border)] px-5 py-2 text-sm">Reset</button>
+            <button onClick={() => resetWith(raw, subject)} className="rounded-full border border-[var(--border)] px-5 py-2 text-sm">Reset</button>
           </div>
         </Bento>
       ) : (
@@ -179,7 +179,7 @@ export default function QuizPage() {
           <p className="text-4xl font-extrabold tabular-nums">{score}/{order.length}</p>
           <p className="mt-1 text-sm text-zinc-500">{score / order.length >= 0.7 ? "TU-ready. Keep drilling weak subjects." : "Revise units, then re-shuffle and retry."}</p>
           <div className="mt-4 flex justify-center gap-2">
-            <button onClick={() => build(raw)} className="rounded-full bg-emerald-600 px-5 py-2 text-sm font-bold text-white">Retry shuffled</button>
+            <button onClick={() => resetWith(raw, subject)} className="rounded-full bg-emerald-600 px-5 py-2 text-sm font-bold text-white">Retry shuffled</button>
             <button onClick={() => setFinished(false)} className="rounded-full border border-[var(--border)] px-5 py-2 text-sm">Review answers</button>
           </div>
         </Bento>
